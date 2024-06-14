@@ -5,18 +5,9 @@ const fs = require('fs');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const metadataFilePath = './metadata.json';
+const upload = multer({ dest: 'uploads/' });
 
-// Set up storage engine for multer
-const storage = multer.diskStorage({
-    destination: './uploads/',
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname));
-    }
-});
-const upload = multer({ storage: storage });
-
-// Serve static files
+// Serve static files from 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Handle video upload
@@ -30,7 +21,11 @@ app.post('/upload', upload.single('video'), (req, res) => {
     };
 
     // Save metadata
-    const metadata = JSON.parse(fs.readFileSync(metadataFilePath));
+    const metadataFilePath = './metadata.json';
+    let metadata = [];
+    if (fs.existsSync(metadataFilePath)) {
+        metadata = JSON.parse(fs.readFileSync(metadataFilePath));
+    }
     metadata.push(videoMetadata);
     fs.writeFileSync(metadataFilePath, JSON.stringify(metadata));
 
@@ -39,8 +34,13 @@ app.post('/upload', upload.single('video'), (req, res) => {
 
 // Endpoint to fetch videos metadata
 app.get('/videos', (req, res) => {
-    const metadata = JSON.parse(fs.readFileSync(metadataFilePath));
-    res.json(metadata);
+    const metadataFilePath = './metadata.json';
+    if (fs.existsSync(metadataFilePath)) {
+        const metadata = JSON.parse(fs.readFileSync(metadataFilePath));
+        res.json(metadata);
+    } else {
+        res.json([]);
+    }
 });
 
 app.listen(PORT, () => {

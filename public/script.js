@@ -1,7 +1,21 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const homeSection = document.getElementById('home-section');
+    const uploadSection = document.getElementById('upload-section');
+    const homeButton = document.getElementById('home-button');
+    const uploadButton = document.getElementById('upload-button');
     const form = document.getElementById('video-upload-form');
     const videoGrid = document.querySelector('.video-grid');
     const refreshButton = document.getElementById('refresh-button');
+
+    homeButton.addEventListener('click', () => {
+        uploadSection.classList.add('hidden');
+        homeSection.classList.remove('hidden');
+    });
+
+    uploadButton.addEventListener('click', () => {
+        homeSection.classList.add('hidden');
+        uploadSection.classList.remove('hidden');
+    });
 
     form.addEventListener('submit', (event) => {
         event.preventDefault();
@@ -66,4 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Load videos initially
     loadVideos();
+
+    // Poll for new videos every 30 seconds
+    setInterval(loadVideos, 30000);
 });
