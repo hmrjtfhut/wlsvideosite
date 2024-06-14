@@ -1,8 +1,7 @@
-// script.js
-
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('video-upload-form');
     const videoGrid = document.querySelector('.video-grid');
+    const refreshButton = document.getElementById('refresh-button');
 
     form.addEventListener('submit', (event) => {
         event.preventDefault();
@@ -24,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    displayVideo(videoTitle, videoDescription, URL.createObjectURL(videoFile));
+                    loadVideos();
                 } else {
                     alert('Failed to upload video');
                 }
@@ -36,24 +35,37 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    function displayVideo(title, description, videoURL) {
+    refreshButton.addEventListener('click', loadVideos);
+
+    function loadVideos() {
+        fetch('/videos')
+            .then(response => response.json())
+            .then(videos => {
+                videoGrid.innerHTML = '';
+                videos.forEach(video => {
+                    displayVideo(video);
+                });
+            })
+            .catch(error => {
+                console.error('Error loading videos:', error);
+            });
+    }
+
+    function displayVideo(video) {
         const videoCard = document.createElement('div');
         videoCard.className = 'video-card';
+        const videoUrl = `/uploads/${video.filename}`;
+        const videoThumbnailUrl = videoUrl + '#t=0.5';
         videoCard.innerHTML = `
-            <video src="${videoURL}" controls></video>
-            <h3>${title}</h3>
-            <p>${description}</p>
-            <button class="like-button">Like</button>
-            <button class="dislike-button">Dislike</button>
+            <a href="${videoUrl}" target="_blank">
+                <img src="${videoThumbnailUrl}" alt="${video.title}">
+            </a>
+            <h3>${video.title}</h3>
+            <p>${video.description}</p>
         `;
         videoGrid.appendChild(videoCard);
-
-        // Add event listeners for like and dislike buttons
-        videoCard.querySelector('.like-button').addEventListener('click', () => {
-            alert('Like functionality is not yet implemented.');
-        });
-        videoCard.querySelector('.dislike-button').addEventListener('click', () => {
-            alert('Dislike functionality is not yet implemented.');
-        });
     }
+
+    // Load videos initially
+    loadVideos();
 });
