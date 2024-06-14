@@ -54,11 +54,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function displayVideo(video) {
         const videoCard = document.createElement('div');
         videoCard.className = 'video-card';
-        const videoUrl = `/uploads/${video.filename}`;
-        const videoThumbnailUrl = videoUrl + '#t=0.5';
         videoCard.innerHTML = `
-            <a href="${videoUrl}" target="_blank">
-                <img src="${videoThumbnailUrl}" alt="${video.title}">
+            <a href="${video.url}" target="_blank">
+                <video src="${video.url}" controls></video>
             </a>
             <h3>${video.title}</h3>
             <p>${video.description}</p>
