@@ -82,5 +82,5 @@ document.addEventListener('DOMContentLoaded', () => {
     loadVideos();
 
     // Poll for new videos every 30 seconds
-    setInterval(loadVideos, 30000);
+    setInterval(loadVideos, 3000);
 });
