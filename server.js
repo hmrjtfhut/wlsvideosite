@@ -1,3 +1,4 @@
+const express = require('express');
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const path = require('path');
@@ -13,11 +14,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/video-sharing', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-});
+mongoose.connect('mongodb://localhost:27017/video-sharing');
 
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
