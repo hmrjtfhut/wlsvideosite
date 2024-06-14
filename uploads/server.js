@@ -1,12 +1,20 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 const app = express();
 const PORT = 3000;
 
+// Create the uploads directory if it doesn't exist
+if (!fs.existsSync('./uploads')) {
+    fs.mkdirSync('./uploads');
+}
+
 // Set up storage engine for multer
 const storage = multer.diskStorage({
-    destination: './uploads',
+    destination: (req, file, cb) => {
+        cb(null, './uploads');
+    },
     filename: (req, file, cb) => {
         cb(null, `${Date.now()}-${file.originalname}`);
     }
@@ -15,7 +23,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Serve static files
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Handle video upload
 app.post('/upload', upload.single('video'), (req, res) => {
