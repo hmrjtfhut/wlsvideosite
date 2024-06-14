@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Sharing Site</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">VideoShare</div>
+            <div class="search-bar">
+                <input type="text" placeholder="Search...">
+                <button id="search-button">Search</button>
+            </div>
+            <div class="user-actions">
+                <button id="sign-in-button">Sign In</button>
+            </div>
+        </header>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Trending</a></li>
+                <li><a href="#">Subscriptions</a></li>
+            </ul>
+        </nav>
+        <main>
+            <div class="upload-form">
+                <h2>Upload a Video</h2>
+                <form id="video-upload-form" enctype="multipart/form-data">
+                    <input type="file" id="video-file" name="video" accept="video/*" required>
+                    <input type="text" id="video-title" name="title" placeholder="Title" required>
+                    <input type="text" id="video-description" name="description" placeholder="Description" required>
+                    <button type="submit">Upload</button>
+                </form>
+            </div>
+            <div class="video-grid">
+                <!-- Videos will be displayed here -->
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
