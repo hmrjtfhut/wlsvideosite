@@ -3,15 +3,15 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-const upload = multer({ dest: 'uploads/' });
+// Use multer to handle file uploads
+const upload = multer({ dest: 'public/uploads/' });
 
-// Serve static files from 'public' directory
+// Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Handle video upload
-app.post('/upload', upload.single('video'), (req, res) => {
+app.post('/api/upload', upload.single('video'), (req, res) => {
     const videoMetadata = {
         filename: req.file.filename,
         title: req.body.title,
@@ -33,7 +33,7 @@ app.post('/upload', upload.single('video'), (req, res) => {
 });
 
 // Endpoint to fetch videos metadata
-app.get('/videos', (req, res) => {
+app.get('/api/videos', (req, res) => {
     const metadataFilePath = './metadata.json';
     if (fs.existsSync(metadataFilePath)) {
         const metadata = JSON.parse(fs.readFileSync(metadataFilePath));
@@ -43,6 +43,4 @@ app.get('/videos', (req, res) => {
     }
 });
 
-app.listen(PORT, () => {
-    console.log(`Server running at https://wls-videos.vercel.app/`);
-});
+module.exports = app;

@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
             formData.append('title', videoTitle);
             formData.append('description', videoDescription);
 
-            fetch('/upload', {
+            fetch('/api/upload', {
                 method: 'POST',
                 body: formData
             })
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
     refreshButton.addEventListener('click', loadVideos);
 
     function loadVideos() {
-        fetch('/videos')
+        fetch('/api/videos')
             .then(response => response.json())
             .then(videos => {
                 videoGrid.innerHTML = '';
@@ -82,5 +82,5 @@ document.addEventListener('DOMContentLoaded', () => {
     loadVideos();
 
     // Poll for new videos every 30 seconds
-    setInterval(loadVideos, 3000);
+    setInterval(loadVideos, 30000);
 });
